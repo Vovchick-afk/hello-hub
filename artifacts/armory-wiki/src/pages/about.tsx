@@ -1,0 +1,23 @@
+import { BookOpen, FileCheck2, LockKeyhole, Quote, Scale } from 'lucide-react';
+import { Link } from 'wouter';
+import { SectionKicker } from '@/components/site-shell';
+
+const principles = [
+  { icon: FileCheck2, title: 'Источник прежде вывода', text: 'Мы отделяем архивный факт от устоявшегося мифа и отмечаем, на каких публикациях строится заметка.' },
+  { icon: Scale, title: 'Контекст вместо культа', text: 'Технические детали важны, но не существуют отдельно от истории производства, людей и последствий.' },
+  { icon: LockKeyhole, title: 'Безопасная граница', text: 'Проект не содержит инструкций по изготовлению, модификации, применению или приобретению оружия.' },
+];
+
+export default function About() {
+  return (
+    <div className="mx-auto max-w-[1240px] px-5 pb-20 pt-14 lg:px-8 lg:pt-20">
+      <section className="grid gap-10 border-b border-border pb-16 md:grid-cols-[1.2fr_.8fr] md:pb-24">
+        <div className="fade-up"><SectionKicker>Редакционная записка</SectionKicker><h1 className="mt-5 max-w-3xl font-display text-[clamp(3.3rem,8vw,7rem)] font-semibold leading-[.94] tracking-[-0.06em]">Предметы<br /><span className="text-primary">рассказывают.</span></h1><p className="mt-8 max-w-xl text-lg leading-8 text-muted-foreground">«Арсенал» создан для тех, кто хочет понимать оружие как исторический документ и результат инженерной культуры — без романтизации и без практических советов.</p></div>
+        <div className="fade-up fade-up-delay-2 flex items-end"><div className="border-l border-primary/30 pl-7"><Quote size={24} className="text-primary" /><p className="mt-4 font-display text-2xl leading-[1.35]">Предмет становится понятнее, когда мы видим вокруг него время.</p><div className="mt-5 font-meta text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Наше редакционное правило</div></div></div>
+      </section>
+      <section className="border-b border-border py-16 md:py-20"><div className="grid gap-8 md:grid-cols-[.65fr_1.35fr]"><div><SectionKicker>Три опоры</SectionKicker><h2 className="mt-4 font-display text-4xl font-semibold tracking-tight">Как мы собираем справку</h2></div><div className="grid gap-px bg-border md:grid-cols-3">{principles.map(({ icon: Icon, title, text }) => <div key={title} className="bg-background p-6"><Icon size={21} className="text-primary" /><h3 className="mt-8 font-display text-xl font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{text}</p></div>)}</div></div></section>
+      <section className="grid gap-12 border-b border-border py-16 md:grid-cols-[.65fr_1.35fr] md:py-20"><div><SectionKicker>Источники</SectionKicker><h2 className="mt-4 font-display text-4xl font-semibold tracking-tight">Откуда берутся факты</h2></div><div className="max-w-2xl"><p className="text-base leading-8 text-foreground/85">В первом выпуске мы опираемся на музейные каталоги, академические энциклопедии, профильные словари и признанные исследовательские работы. Список источников приводится в конце каждой статьи, чтобы читатель мог продолжить путь самостоятельно.</p><div className="mt-8 grid gap-3 sm:grid-cols-2"><div className="paper-panel rounded-sm p-5"><BookOpen size={19} className="text-primary" /><div className="mt-4 font-display text-lg">Музейные коллекции</div><div className="mt-1 text-sm text-muted-foreground">Предметы, датировка, provenance</div></div><div className="paper-panel rounded-sm p-5"><FileCheck2 size={19} className="text-primary" /><div className="mt-4 font-display text-lg">Справочные издания</div><div className="mt-1 text-sm text-muted-foreground">Термины, хронология, сравнения</div></div></div></div></section>
+      <section className="py-16 md:py-20"><div className="mx-auto max-w-3xl border border-primary/25 bg-primary/5 px-6 py-9 text-center md:px-12"><LockKeyhole size={24} className="mx-auto text-primary" /><h2 className="mt-4 font-display text-3xl font-semibold">Важная оговорка</h2><p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-muted-foreground">Все материалы «Арсенала» предназначены для образования, исследования и культурного разговора. Мы не даём инструкций по изготовлению, разборке, изменению или применению оружия. Если вам нужна практическая информация, обратитесь к официальным и лицензированным источникам в вашей юрисдикции.</p><Link href="/catalog" data-testid="link-about-catalog" className="mt-7 inline-flex items-center gap-2 font-meta text-[10px] uppercase tracking-[0.14em] text-primary hover:underline">Перейти к материалам <span aria-hidden="true">→</span></Link></div></section>
+    </div>
+  );
+}
