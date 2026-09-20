@@ -1,4 +1,13 @@
-export type ArticleCategory = 'История' | 'Классификация' | 'Модели';
+export type ArticleCategory = 'История' | 'Классификация' | 'Модели' | 'Технологии' | 'Культура';
+
+export type SourceKind = 'Музей' | 'Академический справочник' | 'Исследовательский проект' | 'Профильная организация';
+
+export type Source = {
+  title: string;
+  publisher: string;
+  kind: SourceKind;
+  url: string;
+};
 
 export type Article = {
   slug: string;
@@ -11,16 +20,103 @@ export type Article = {
   accent: string;
   sections: { heading: string; paragraphs: string[] }[];
   facts: { label: string; value: string }[];
-  sources: string[];
+  sources: Source[];
+  timelineEventIds: string[];
+  relatedSlugs: string[];
+};
+
+export type TimelineEvent = {
+  id: string;
+  year: string;
+  period: string;
+  title: string;
+  summary: string;
+  articleSlugs: string[];
 };
 
 export const categories: { name: ArticleCategory; description: string; count: string }[] = [
-  { name: 'История', description: 'Люди, эпохи и изменения, которые сформировали предмет.', count: '02' },
+  { name: 'История', description: 'Люди, эпохи и изменения, которые сформировали предмет.', count: '03' },
   { name: 'Классификация', description: 'Термины и принципы, помогающие читать технический язык.', count: '02' },
-  { name: 'Модели', description: 'Известные образцы — через контекст, а не культ.', count: '02' },
+  { name: 'Модели', description: 'Известные образцы — через контекст, а не культ.', count: '03' },
+  { name: 'Технологии', description: 'Материалы и решения, которые меняли возможности производства.', count: '01' },
+  { name: 'Культура', description: 'Как оружие становится музейным предметом и историческим свидетельством.', count: '01' },
 ];
 
+const britannica: Source = {
+  title: 'Firearm',
+  publisher: 'Encyclopaedia Britannica',
+  kind: 'Академический справочник',
+  url: 'https://www.britannica.com/technology/firearm',
+};
+
+const metArms: Source = {
+  title: 'Arms and Armor collection',
+  publisher: 'The Metropolitan Museum of Art',
+  kind: 'Музей',
+  url: 'https://www.metmuseum.org/art/collection/search?department=4',
+};
+
+const royalArmouries: Source = {
+  title: 'Collections: Firearms',
+  publisher: 'Royal Armouries',
+  kind: 'Музей',
+  url: 'https://royalarmouries.org/collection/',
+};
+
+const smithsonianArms: Source = {
+  title: 'Arms and Armor',
+  publisher: 'Smithsonian National Museum of American History',
+  kind: 'Музей',
+  url: 'https://americanhistory.si.edu/collections/subjects/arms-and-armor',
+};
+
+const smallArmsSurvey: Source = {
+  title: 'Publications',
+  publisher: 'Small Arms Survey',
+  kind: 'Исследовательский проект',
+  url: 'https://smallarmssurvey.org/publications',
+};
+
+const saamiGlossary: Source = {
+  title: 'Technical Glossary',
+  publisher: 'SAAMI',
+  kind: 'Профильная организация',
+  url: 'https://saami.org/technical-information/',
+};
+
+const nationalArmyMuseum: Source = {
+  title: 'Weapons and equipment',
+  publisher: 'National Army Museum',
+  kind: 'Музей',
+  url: 'https://www.nam.ac.uk/explore/guns',
+};
+
+const libraryOfCongress: Source = {
+  title: 'Firearms and military history collections',
+  publisher: 'Library of Congress',
+  kind: 'Исследовательский проект',
+  url: 'https://www.loc.gov/collections/',
+};
+
 export const articles: Article[] = [
+  {
+    slug: 'poroh-i-rannie-ruchnye-ognestrely',
+    title: 'Порох и первые ручные огнестрелы',
+    eyebrow: 'Очерк · Ранняя история',
+    category: 'История',
+    year: 'XIV—XVI века',
+    readingTime: '7 мин',
+    excerpt: 'Что менялось в первых ручных огнестрельных системах и почему ранняя история — это история экспериментов, а не готовых образцов.',
+    accent: 'Начало',
+    sections: [
+      { heading: 'От пороховой смеси к предмету', paragraphs: ['Первые ручные огнестрельные системы возникли из более ранней артиллерийской традиции. Их развитие зависело одновременно от состава пороха, качества металла, способов литья и навыков мастера.', 'Ранние образцы были неоднородны: один и тот же термин мог обозначать предметы разной формы и конструкции. Поэтому музейное описание и датировка здесь важнее позднего привычного названия.'] },
+      { heading: 'Почему ранние даты приблизительны', paragraphs: ['Источники о первых веках огнестрельного оружия распределены неравномерно. Сохранившийся предмет может быть поздней копией, а письменное упоминание — описывать технологию без конкретного экземпляра.', 'Историк сопоставляет материальные признаки, контекст находки, архивные записи и аналогии из музейных коллекций, а не переносит одну дату на весь класс предметов.'] },
+    ],
+    facts: [{ label: 'Период', value: 'XIV—XVI века' }, { label: 'Главный вопрос', value: 'Как датировать предмет' }, { label: 'Оптика', value: 'Материальная история' }],
+    sources: [britannica, metArms, royalArmouries],
+    timelineEventIds: ['early-gunpowder', 'matchlock-era'],
+    relatedSlugs: ['ot-kremnevogo-zamka-k-unitarnomu-patronu', 'kak-klassificiruyut-strelkovoe-oruzhie'],
+  },
   {
     slug: 'ot-kremnevogo-zamka-k-unitarnomu-patronu',
     title: 'От кремнёвого замка к унитарному патрону',
@@ -36,7 +132,9 @@ export const articles: Article[] = [
       { heading: 'Как читать этот период сегодня', paragraphs: ['Технический прогресс здесь неотделим от истории труда, снабжения и государственного заказа. Один и тот же механизм мог выглядеть по-разному в разных странах, потому что зависел от местных производственных возможностей и военной культуры.'] },
     ],
     facts: [{ label: 'Период', value: 'около 1600—1880' }, { label: 'Главный сдвиг', value: 'Унитарный патрон' }, { label: 'Оптика', value: 'Технологическая история' }],
-    sources: ['Encyclopaedia Britannica, “Firearm”', 'The Metropolitan Museum of Art, Arms and Armor collection'],
+    sources: [britannica, metArms, saamiGlossary],
+    timelineEventIds: ['flintlock-standard', 'cartridge-transition'],
+    relatedSlugs: ['poroh-i-rannie-ruchnye-ognestrely', 'nariznoi-stvol-i-proizvodstvo'],
   },
   {
     slug: 'kak-klassificiruyut-strelkovoe-oruzhie',
@@ -53,7 +151,27 @@ export const articles: Article[] = [
       { heading: 'Почему точность слов важна', paragraphs: ['Популярные тексты нередко смешивают юридические, бытовые и технические значения. Энциклопедический подход отделяет наблюдаемый факт от оценочного суждения и обязательно указывает, к какому времени и региону относится термин.'] },
     ],
     facts: [{ label: 'Тип текста', value: 'Справочная заметка' }, { label: 'Ключевой принцип', value: 'Сначала — основание' }, { label: 'Уровень', value: 'Введение' }],
-    sources: ['Большая российская энциклопедия, статьи о стрелковом оружии', 'SAAMI Glossary of the Sporting Arms and Ammunition Industry'],
+    sources: [britannica, saamiGlossary, smallArmsSurvey],
+    timelineEventIds: ['cartridge-transition'],
+    relatedSlugs: ['revolver-kak-ideya-cikla', 'nariznoi-stvol-i-proizvodstvo'],
+  },
+  {
+    slug: 'nariznoi-stvol-i-proizvodstvo',
+    title: 'Нарезной ствол и промышленная точность',
+    eyebrow: 'Справка · Технологии',
+    category: 'Технологии',
+    year: 'XV—XIX века',
+    readingTime: '7 мин',
+    excerpt: 'Как нарезы, измерительный инструмент и серийное производство изменили разговор о точности.',
+    accent: 'Механика',
+    sections: [
+      { heading: 'Нарезы как историческая технология', paragraphs: ['Нарезы внутри ствола стали одним из способов сделать полёт пули более устойчивым. Но их появление не было одиночным изобретением: требовались подходящие инструменты, стандарты размеров и время на изготовление.', 'В ранних системах трудоёмкость ограничивала распространение. Позднее развитие станков, измерительных практик и металлургии сделало более сложные стволы частью промышленного производства.'] },
+      { heading: 'Точность — не одно число', paragraphs: ['В музейном и историческом описании точность нельзя отделять от боеприпаса, состояния предмета, условий испытания и навыка пользователя. Сравнение разных веков по одной современной шкале создаёт ложную ясность.', 'Поэтому технологическая статья описывает не обещание результата, а набор решений и ограничений, видимых в конкретном времени.'] },
+    ],
+    facts: [{ label: 'Период', value: 'XV—XIX века' }, { label: 'Фокус', value: 'Производство' }, { label: 'Ключевая мысль', value: 'Точность — система' }],
+    sources: [metArms, royalArmouries, smithsonianArms],
+    timelineEventIds: ['rifling-development', 'cartridge-transition'],
+    relatedSlugs: ['kak-klassificiruyut-strelkovoe-oruzhie', 'mosin-nagan-v-kontekste-epohi'],
   },
   {
     slug: 'mosin-nagan-v-kontekste-epohi',
@@ -70,7 +188,45 @@ export const articles: Article[] = [
       { heading: 'О границах популярного образа', paragraphs: ['Вокруг известных моделей быстро возникают легенды. Спокойное чтение отделяет проверяемую историю разработки и производства от позднейших оценок, мемуарных сюжетов и коллекционного фольклора.'] },
     ],
     facts: [{ label: 'Принятие', value: '1891 год' }, { label: 'Категория', value: 'Магазинная винтовка' }, { label: 'Фокус', value: 'История производства' }],
-    sources: ['Государственный исторический музей, коллекции вооружения', 'Walter D. M. K. A. Mosin-Nagant: A Comprehensive Guide'],
+    sources: [nationalArmyMuseum, libraryOfCongress, smallArmsSurvey],
+    timelineEventIds: ['standard-service-rifle'],
+    relatedSlugs: ['nariznoi-stvol-i-proizvodstvo', 'ak-47-mif-i-termin'],
+  },
+  {
+    slug: 'revolver-kak-ideya-cikla',
+    title: 'Револьвер: идея повторяемого цикла',
+    eyebrow: 'Справка · Конструкция',
+    category: 'Классификация',
+    year: 'XIX век',
+    readingTime: '5 мин',
+    excerpt: 'О барабанной схеме как о понятном инженерном ответе на задачу многозарядности.',
+    accent: 'Схема',
+    sections: [
+      { heading: 'Барабан как носитель зарядов', paragraphs: ['Револьвер — это короткоствольная система с вращающимся барабаном, в каморах которого размещаются патроны или заряды. При работе механизма очередная камора совмещается со стволом.', 'Такая компоновка оказалась привлекательной в XIX веке: она позволяла повторять выстрел без полной ручной перезарядки после каждого цикла. Разные конструкции решали эту задачу неодинаково.'] },
+      { heading: 'Между простотой и компромиссами', paragraphs: ['Барабанная схема добавляет массе и габариту, зато даёт легко узнаваемую последовательность работы. История револьвера — это история компромиссов между ёмкостью, надёжностью, скоростью обслуживания и возможностями производства.'] },
+    ],
+    facts: [{ label: 'Принцип', value: 'Вращающийся барабан' }, { label: 'Период расцвета', value: 'XIX век' }, { label: 'Формат', value: 'Конструктивная справка' }],
+    sources: [royalArmouries, metArms, smithsonianArms],
+    timelineEventIds: ['cartridge-transition'],
+    relatedSlugs: ['kak-klassificiruyut-strelkovoe-oruzhie', 'pistolet-makarova-v-poslevoennom-mire'],
+  },
+  {
+    slug: 'pistolet-makarova-v-poslevoennom-mire',
+    title: 'Пистолет Макарова и послевоенный стандарт',
+    eyebrow: 'Портрет модели · История',
+    category: 'Модели',
+    year: '1951',
+    readingTime: '6 мин',
+    excerpt: 'Место компактного советского пистолета в истории унификации и послевоенной повседневности.',
+    accent: 'Архив',
+    sections: [
+      { heading: 'Задача компактной системы', paragraphs: ['Пистолет Макарова был принят на вооружение в 1951 году после послевоенного конкурса. Его появление отражало поиск сравнительно компактной и технологичной системы для офицерского и служебного применения.', 'Как и многие серийные образцы, он интересен не только формой. В нём соединяются решение конструкторской задачи, возможности советской промышленности и требования ведомственного стандарта.'] },
+      { heading: 'Предмет повседневной службы', paragraphs: ['Долгая служба сделала эту модель привычной частью визуального языка второй половины XX века. Исторический взгляд помогает увидеть за узнаваемостью конкретные документы, заводскую практику и изменения в институтах, где пистолет использовался.'] },
+    ],
+    facts: [{ label: 'Принят', value: '1951 год' }, { label: 'Класс', value: 'Самозарядный пистолет' }, { label: 'Линза', value: 'Стандартизация' }],
+    sources: [nationalArmyMuseum, smallArmsSurvey, libraryOfCongress],
+    timelineEventIds: ['postwar-standard'],
+    relatedSlugs: ['mosin-nagan-v-kontekste-epohi', 'ak-47-mif-i-termin'],
   },
   {
     slug: 'ak-47-mif-i-termin',
@@ -87,40 +243,44 @@ export const articles: Article[] = [
       { heading: 'Этика описания', paragraphs: ['Говорить об известных образцах ответственно — значит не романтизировать насилие и не путать узнаваемость с качественной оценкой. В «Арсенале» это прежде всего источники, даты и контекст.'] },
     ],
     facts: [{ label: 'Первый образец', value: '1947 год' }, { label: 'Сфера', value: 'История и культура' }, { label: 'Важно помнить', value: 'Серия ≠ один предмет' }],
-    sources: ['Ian V. Hogg, The Encyclopedia of Infantry Weapons', 'Small Arms Survey, research publications'],
+    sources: [smallArmsSurvey, libraryOfCongress, britannica],
+    timelineEventIds: ['postwar-standard'],
+    relatedSlugs: ['pistolet-makarova-v-poslevoennom-mire', 'mosin-nagan-v-kontekste-epohi'],
   },
   {
-    slug: 'revolver-kak-ideya-cikla',
-    title: 'Револьвер: идея повторяемого цикла',
-    eyebrow: 'Справка · Конструкция',
-    category: 'Классификация',
-    year: 'XIX век',
-    readingTime: '5 мин',
-    excerpt: 'О барабанной схеме как о понятном инженерном ответе на задачу многозарядности.',
-    accent: 'Схема',
-    sections: [
-      { heading: 'Барабан как носитель зарядов', paragraphs: ['Револьвер — это короткоствольная система с вращающимся барабаном, в каморах которого размещаются патроны или заряды. При работе механизма очередная камора совмещается со стволом.', 'Такая компоновка оказалась привлекательной в XIX веке: она позволяла повторять выстрел без полной ручной перезарядки после каждого цикла. Разные конструкции решали эту задачу неодинаково.'] },
-      { heading: 'Между простотой и компромиссами', paragraphs: ['Барабанная схема добавляет массе и габариту, зато даёт легко узнаваемую последовательность работы. История револьвера — это история компромиссов между ёмкостью, надёжностью, скоростью обслуживания и возможностями производства.'] },
-    ],
-    facts: [{ label: 'Принцип', value: 'Вращающийся барабан' }, { label: 'Период расцвета', value: 'XIX век' }, { label: 'Формат', value: 'Конструктивная справка' }],
-    sources: ['Royal Armouries, historical firearms collection', 'The Metropolitan Museum of Art, Arms and Armor collection'],
-  },
-  {
-    slug: 'pistolet-makarova-v-poslevoennom-mire',
-    title: 'Пистолет Макарова и послевоенный стандарт',
-    eyebrow: 'Портрет модели · История',
-    category: 'Модели',
-    year: '1951',
+    slug: 'oruzhie-v-muzeinom-kontekste',
+    title: 'Оружие в музейном контексте',
+    eyebrow: 'Метод · Работа с предметом',
+    category: 'Культура',
+    year: 'Современная практика',
     readingTime: '6 мин',
-    excerpt: 'Место компактного советского пистолета в истории унификации и послевоенной повседневности.',
-    accent: 'Архив',
+    excerpt: 'Почему инвентарный номер, происхождение и история бытования так же важны, как форма и механизм.',
+    accent: 'Коллекция',
     sections: [
-      { heading: 'Задача компактной системы', paragraphs: ['Пистолет Макарова был принят на вооружение в 1951 году после послевоенного конкурса. Его появление отражало поиск сравнительно компактной и технологичной системы для офицерского и служебного применения.', 'Как и многие серийные образцы, он интересен не только формой. В нём соединяются решение конструкторской задачи, возможности советской промышленности и требования ведомственного стандарта.'] },
-      { heading: 'Предмет повседневной службы', paragraphs: ['Долгая служба сделала эту модель привычной частью визуального языка второй половины XX века. Исторический взгляд помогает увидеть за узнаваемостью конкретные документы, заводскую практику и изменения в институтах, где пистолет использовался.'] },
+      { heading: 'Предмет — это больше, чем его механизм', paragraphs: ['Музейное описание фиксирует материал, размеры, состояние сохранности, маркировки и происхождение предмета. Эти сведения позволяют говорить о вещи проверяемо и не подменять историю впечатлением от внешнего вида.', 'Особое значение имеет provenance — история происхождения и перемещения предмета. Она связывает объект с людьми, мастерскими, коллекционерами, войнами и музейными решениями.'] },
+      { heading: 'Как читать музейную карточку', paragraphs: ['Каталожная запись почти всегда содержит ограничения: дата может быть диапазоном, авторство — предположительным, а назначение — реконструированным по аналогиям. Хорошая справка не скрывает эти границы знания.', 'Сопоставление нескольких открытых коллекций помогает заметить разницу между музейной атрибуцией, популярным названием и поздней легендой.'] },
     ],
-    facts: [{ label: 'Принят', value: '1951 год' }, { label: 'Класс', value: 'Самозарядный пистолет' }, { label: 'Линза', value: 'Стандартизация' }],
-    sources: ['Центральный музей Вооружённых сил, фонды', 'Max Popenker, Modern Firearms reference'],
+    facts: [{ label: 'Фокус', value: 'Provenance и атрибуция' }, { label: 'Тип материала', value: 'Методическая заметка' }, { label: 'Практика', value: 'Сравнение каталогов' }],
+    sources: [metArms, royalArmouries, smithsonianArms],
+    timelineEventIds: ['museum-catalogues'],
+    relatedSlugs: ['poroh-i-rannie-ruchnye-ognestrely', 'mosin-nagan-v-kontekste-epohi'],
   },
 ];
 
+export const timeline: TimelineEvent[] = [
+  { id: 'early-gunpowder', year: 'ок. 1300—1400', period: 'Раннее Новое время', title: 'Порох входит в ручные системы', summary: 'Европейские и азиатские мастера начинают переносить артиллерийские принципы в более компактные предметы.', articleSlugs: ['poroh-i-rannie-ruchnye-ognestrely'] },
+  { id: 'matchlock-era', year: 'XV—XVI века', period: 'Раннее Новое время', title: 'Фитильный замок задаёт повторяемый способ воспламенения', summary: 'Механизация воспламенения делает ручные системы пригоднее для строевой и массовой практики.', articleSlugs: ['poroh-i-rannie-ruchnye-ognestrely'] },
+  { id: 'rifling-development', year: 'XV—XIX века', period: 'Переход к промышленности', title: 'Нарезы становятся частью инженерного языка', summary: 'Развитие инструментов и измерений постепенно превращает нарезной ствол из трудоёмкого решения в промышленную технологию.', articleSlugs: ['nariznoi-stvol-i-proizvodstvo'] },
+  { id: 'flintlock-standard', year: 'конец XVII века', period: 'Раннее Новое время', title: 'Кремнёвый замок становится стандартом', summary: 'Устойчивое воспламенение и ремонтопригодность помогают схеме надолго закрепиться в военной практике.', articleSlugs: ['ot-kremnevogo-zamka-k-unitarnomu-patronu'] },
+  { id: 'cartridge-transition', year: '1820—1880-е', period: 'Индустриальная эпоха', title: 'Унитарный патрон меняет цикл заряжания', summary: 'Боеприпас объединяет основные элементы, а фабричное производство ускоряет распространение новых схем.', articleSlugs: ['ot-kremnevogo-zamka-k-unitarnomu-patronu', 'kak-klassificiruyut-strelkovoe-oruzhie', 'revolver-kak-ideya-cikla'] },
+  { id: 'standard-service-rifle', year: '1891', period: 'Индустриальная эпоха', title: 'Появляется винтовка образца 1891 года', summary: 'Конкурс, государственный заказ и серийное производство соединяются в одном долговечном образце.', articleSlugs: ['mosin-nagan-v-kontekste-epohi'] },
+  { id: 'postwar-standard', year: '1947—1951', period: 'XX век', title: 'Послевоенная стандартизация', summary: 'Новые требования армии и промышленности формируют узнаваемые серийные модели и семейства образцов.', articleSlugs: ['ak-47-mif-i-termin', 'pistolet-makarova-v-poslevoennom-mire'] },
+  { id: 'museum-catalogues', year: 'XX—XXI века', period: 'История коллекций', title: 'Музейный каталог становится исследовательским инструментом', summary: 'Открытые коллекции переводят сведения о материальных объектах в доступный язык дат, атрибуций и provenance.', articleSlugs: ['oruzhie-v-muzeinom-kontekste'] },
+];
+
+export const bibliography = Array.from(
+  new Map(articles.flatMap((article) => article.sources).map((source) => [source.url, source])).values(),
+);
+
 export const getArticle = (slug: string) => articles.find((article) => article.slug === slug);
+export const getTimelineEvent = (id: string) => timeline.find((event) => event.id === id);

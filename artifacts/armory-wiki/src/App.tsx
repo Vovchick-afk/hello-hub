@@ -9,6 +9,7 @@ import ArticlePage from '@/pages/article';
 import Catalog from '@/pages/catalog';
 import Home from '@/pages/home';
 import NotFound from '@/pages/not-found';
+import TimelinePage from '@/pages/timeline';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/catalog" component={Catalog} />
+          <Route path="/timeline" component={TimelinePage} />
           <Route path="/article/:slug" component={ArticlePage} />
           <Route path="/about" component={About} />
           <Route component={NotFound} />

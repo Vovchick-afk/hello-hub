@@ -5,6 +5,7 @@ import { Link, useLocation } from 'wouter';
 const navItems = [
   { href: '/', label: 'Главная' },
   { href: '/catalog', label: 'Каталог' },
+  { href: '/timeline', label: 'Хронология' },
   { href: '/about', label: 'О проекте' },
 ];
 
