@@ -21,8 +21,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <Crosshair size={21} strokeWidth={1.5} />
             </span>
             <span>
-              <span className="font-display block text-[25px] font-semibold leading-none tracking-tight">Арсенал</span>
-              <span className="font-meta mt-1 block text-[9px] uppercase tracking-[0.18em] text-[hsl(var(--sidebar-foreground)/.52)]">Энциклопедия</span>
+              <span className="font-display block text-[25px] font-semibold leading-none tracking-tight">G.U.N.S.</span>
+              <span className="font-meta mt-1 block text-[9px] uppercase tracking-[0.14em] text-[hsl(var(--sidebar-foreground)/.52)]">Guns · Units · Numbers · Specs</span>
             </span>
           </Link>
           <nav className="hidden items-center gap-8 md:flex" aria-label="Основная навигация">
@@ -50,13 +50,13 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <footer className="mt-24 border-t border-border bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))]">
         <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-12 md:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
           <div>
-            <div className="flex items-center gap-3"><Crosshair size={20} className="text-[hsl(var(--sidebar-primary))]" /><span className="font-display text-xl">Арсенал</span></div>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-[hsl(var(--sidebar-foreground)/.65)]">Спокойная энциклопедия об истории, технологии и культурном контексте огнестрельного оружия.</p>
+            <div className="flex items-center gap-3"><Crosshair size={20} className="text-[hsl(var(--sidebar-primary))]" /><span className="font-display text-xl">G.U.N.S.</span></div>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[hsl(var(--sidebar-foreground)/.65)]">Справочная база моделей, семейств и модификаций огнестрельного оружия: факты, контекст, фото и источники.</p>
           </div>
           <div><div className="rule-label text-[hsl(var(--sidebar-primary))]">Разделы</div><div className="mt-4 space-y-3">{navItems.slice(1).map((item) => <Link href={item.href} key={item.href} data-testid={`link-footer-${item.label}`} className="block text-sm text-[hsl(var(--sidebar-foreground)/.72)] transition-colors hover:text-[hsl(var(--sidebar-primary))]">{item.label}</Link>)}</div></div>
           <div><div className="rule-label text-[hsl(var(--sidebar-primary))]">Принцип</div><p className="mt-4 text-sm leading-6 text-[hsl(var(--sidebar-foreground)/.65)]">Факт важнее эффекта. Контекст важнее мифа. Без инструкций по применению.</p></div>
         </div>
-        <div className="border-t border-[hsl(var(--sidebar-border))]"><div className="mx-auto flex max-w-[1240px] flex-col gap-2 px-5 py-5 font-meta text-[9px] uppercase tracking-[0.14em] text-[hsl(var(--sidebar-foreground)/.45)] sm:flex-row sm:justify-between lg:px-8"><span>Редакционный проект · 2024</span><span>Материалы для образования и исследования</span></div></div>
+          <div className="border-t border-[hsl(var(--sidebar-border))]"><div className="mx-auto flex max-w-[1240px] flex-col gap-2 px-5 py-5 font-meta text-[9px] uppercase tracking-[0.14em] text-[hsl(var(--sidebar-foreground)/.45)] sm:flex-row sm:justify-between lg:px-8"><span>Guns · Units · Numbers · Specs.</span><span>Материалы для образования и исследования</span></div></div>
       </footer>
     </div>
   );
