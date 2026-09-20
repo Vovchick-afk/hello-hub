@@ -1,20 +1,65 @@
-// Export your models here. Add one export per file
-// export * from "./posts";
-//
-// Each model/table should ideally be split into different files.
-// Each model/table should define a Drizzle table, insert schema, and types:
-//
-//   import { pgTable, text, serial } from "drizzle-orm/pg-core";
-//   import { createInsertSchema } from "drizzle-zod";
-//   import { z } from "zod/v4";
-//
-//   export const postsTable = pgTable("posts", {
-//     id: serial("id").primaryKey(),
-//     title: text("title").notNull(),
-//   });
-//
-//   export const insertPostSchema = createInsertSchema(postsTable).omit({ id: true });
-//   export type InsertPost = z.infer<typeof insertPostSchema>;
-//   export type Post = typeof postsTable.$inferSelect;
+import {
+  boolean,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 
-export {}
+export const weaponsTable = pgTable("weapons", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug", { length: 160 }).notNull().unique(),
+  title: text("title").notNull(),
+  family: text("family").notNull(),
+  manufacturer: text("manufacturer").notNull(),
+  country: text("country").notNull(),
+  ammunition: text("ammunition").notNull(),
+  kind: text("kind").notNull(),
+  summary: text("summary").notNull(),
+  description: text("description").notNull(),
+  principle: text("principle").notNull(),
+  safetyNote: text("safety_note").notNull(),
+  imageUrl: text("image_url"),
+  yearFrom: integer("year_from"),
+  yearTo: integer("year_to"),
+  variantOfId: integer("variant_of_id"),
+  published: boolean("published").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const weaponImagesTable = pgTable("weapon_images", {
+  id: serial("id").primaryKey(),
+  weaponId: integer("weapon_id")
+    .notNull()
+    .references(() => weaponsTable.id, { onDelete: "cascade" }),
+  url: text("url").notNull(),
+  alt: text("alt").notNull(),
+  caption: text("caption").notNull(),
+  sourceUrl: text("source_url"),
+  sourceName: text("source_name").notNull(),
+});
+
+export const weaponResourcesTable = pgTable("weapon_resources", {
+  id: serial("id").primaryKey(),
+  weaponId: integer("weapon_id")
+    .notNull()
+    .references(() => weaponsTable.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  url: text("url").notNull(),
+  kind: varchar("kind", { length: 32 }).notNull(),
+  description: text("description"),
+  sourceName: text("source_name").notNull(),
+});
+
+export const commentsTable = pgTable("weapon_comments", {
+  id: serial("id").primaryKey(),
+  weaponId: integer("weapon_id")
+    .notNull()
+    .references(() => weaponsTable.id, { onDelete: "cascade" }),
+  nickname: varchar("nickname", { length: 32 }).notNull(),
+  body: varchar("body", { length: 1000 }).notNull(),
+  status: varchar("status", { length: 20 }).notNull().default("published"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});

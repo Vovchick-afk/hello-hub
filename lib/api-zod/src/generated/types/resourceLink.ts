@@ -5,7 +5,13 @@
  * Арсенал — каталог справочных материалов об огнестрельном оружии
  * OpenAPI spec version: 0.1.0
  */
+import type { ResourceLinkKind } from './resourceLinkKind';
 
-export interface HealthStatus {
-  status: string;
+export interface ResourceLink {
+  title: string;
+  url: string;
+  kind: ResourceLinkKind;
+  /** @nullable */
+  description?: string | null;
+  sourceName: string;
 }

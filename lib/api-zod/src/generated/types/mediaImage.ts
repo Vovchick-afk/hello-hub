@@ -6,6 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface MediaImage {
+  url: string;
+  alt: string;
+  caption: string;
+  /** @nullable */
+  sourceUrl?: string | null;
+  sourceName: string;
 }

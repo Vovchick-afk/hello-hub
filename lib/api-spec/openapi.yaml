@@ -3,13 +3,17 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Арсенал — каталог справочных материалов об огнестрельном оружии
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: weapons
+    description: Справочный каталог моделей и семейств
+  - name: comments
+    description: Пользовательские комментарии
 paths:
   /healthz:
     get:
@@ -24,7 +28,158 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /weapons:
+    get:
+      operationId: listWeapons
+      tags: [weapons]
+      summary: Найти оружие в каталоге
+      description: Ищет справочные карточки по точному названию и фильтрам.
+      parameters:
+        - $ref: "#/components/parameters/SearchQuery"
+        - $ref: "#/components/parameters/FamilyQuery"
+        - $ref: "#/components/parameters/AmmunitionQuery"
+        - $ref: "#/components/parameters/CountryQuery"
+        - $ref: "#/components/parameters/ManufacturerQuery"
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 24
+      responses:
+        "200":
+          description: Список совпадений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WeaponSummary"
+  /weapons/meta:
+    get:
+      operationId: getWeaponMeta
+      tags: [weapons]
+      summary: Получить значения фильтров каталога
+      responses:
+        "200":
+          description: Значения для фильтров
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeaponMeta"
+  /weapons/{slug}:
+    get:
+      operationId: getWeapon
+      tags: [weapons]
+      summary: Получить карточку оружия
+      parameters:
+        - $ref: "#/components/parameters/WeaponSlug"
+      responses:
+        "200":
+          description: Подробная карточка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeaponDetail"
+        "404":
+          description: Карточка не найдена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /weapons/{slug}/comments:
+    get:
+      operationId: listWeaponComments
+      tags: [comments]
+      summary: Получить комментарии к карточке
+      parameters:
+        - $ref: "#/components/parameters/WeaponSlug"
+      responses:
+        "200":
+          description: Опубликованные комментарии
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+    post:
+      operationId: createWeaponComment
+      tags: [comments]
+      summary: Оставить комментарий
+      parameters:
+        - $ref: "#/components/parameters/WeaponSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+      responses:
+        "201":
+          description: Комментарий принят
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "400":
+          description: Некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Карточка не найдена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
+  parameters:
+    WeaponSlug:
+      name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+    SearchQuery:
+      name: q
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 120
+    FamilyQuery:
+      name: family
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 80
+    AmmunitionQuery:
+      name: ammunition
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 80
+    CountryQuery:
+      name: country
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 80
+    ManufacturerQuery:
+      name: manufacturer
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 120
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +188,178 @@ components:
           type: string
       required:
         - status
+    WeaponSummary:
+      type: object
+      required:
+        - slug
+        - title
+        - family
+        - manufacturer
+        - country
+        - ammunition
+        - kind
+        - summary
+        - variantCount
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        family:
+          type: string
+        manufacturer:
+          type: string
+        country:
+          type: string
+        ammunition:
+          type: string
+        kind:
+          type: string
+        summary:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        yearFrom:
+          type: ["integer", "null"]
+        yearTo:
+          type: ["integer", "null"]
+        variantOf:
+          type: ["string", "null"]
+        variantCount:
+          type: integer
+    WeaponDetail:
+      allOf:
+        - $ref: "#/components/schemas/WeaponSummary"
+        - type: object
+          required:
+            - description
+            - principle
+            - safetyNote
+            - variants
+            - images
+            - resources
+          properties:
+            description:
+              type: string
+            principle:
+              type: string
+            safetyNote:
+              type: string
+            variants:
+              type: array
+              items:
+                $ref: "#/components/schemas/WeaponSummary"
+            images:
+              type: array
+              items:
+                $ref: "#/components/schemas/MediaImage"
+            resources:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceLink"
+    MediaImage:
+      type: object
+      required:
+        - url
+        - alt
+        - caption
+        - sourceName
+      properties:
+        url:
+          type: string
+          format: uri
+        alt:
+          type: string
+        caption:
+          type: string
+        sourceUrl:
+          type: ["string", "null"]
+          format: uri
+        sourceName:
+          type: string
+    ResourceLink:
+      type: object
+      required:
+        - title
+        - url
+        - kind
+        - sourceName
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        kind:
+          type: string
+          enum: [Видео, Статья, Музей, Архив, Схема]
+        description:
+          type: ["string", "null"]
+        sourceName:
+          type: string
+    Comment:
+      type: object
+      required:
+        - id
+        - weaponSlug
+        - nickname
+        - body
+        - createdAt
+      properties:
+        id:
+          type: integer
+        weaponSlug:
+          type: string
+        nickname:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    CommentInput:
+      type: object
+      required:
+        - nickname
+        - body
+      properties:
+        nickname:
+          type: string
+          minLength: 2
+          maxLength: 32
+        body:
+          type: string
+          minLength: 3
+          maxLength: 1000
+    WeaponMeta:
+      type: object
+      required:
+        - families
+        - ammunition
+        - countries
+        - manufacturers
+      properties:
+        families:
+          type: array
+          items:
+            type: string
+        ammunition:
+          type: array
+          items:
+            type: string
+        countries:
+          type: array
+          items:
+            type: string
+        manufacturers:
+          type: array
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
 
