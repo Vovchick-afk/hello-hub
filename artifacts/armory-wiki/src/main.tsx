@@ -1,9 +1,18 @@
 import { createRoot } from 'react-dom/client';
+import { setBaseUrl } from '@workspace/api-client-react';
 
 import App from './App';
 import { ErrorBoundary } from '@/components/error-boundary';
 
 import './index.css';
+
+// Настраиваем базовый URL API из переменной окружения.
+// Локально переменная не задана — запросы идут через Vite-прокси на localhost:3001.
+// На Railway переменная VITE_API_URL задана — запросы идут на публичный домен api-server.
+const apiUrl = import.meta.env.VITE_API_URL;
+if (apiUrl) {
+  setBaseUrl(apiUrl);
+}
 
 createRoot(document.getElementById('root')!, {
   // Keeps caught errors off reportError(), which would raise the dev overlay.
