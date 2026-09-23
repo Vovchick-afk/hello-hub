@@ -24,7 +24,7 @@ export default function Home() {
           <div className="absolute left-[-5px] top-0 h-2.5 w-2.5 rounded-full bg-primary" />
           <div className="font-meta text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Запись редактора / 001</div>
           <p className="mt-10 font-display text-2xl leading-[1.35] text-foreground md:text-3xl">«Хорошая справка не делает предмет громче. Она помогает увидеть, из чего он сделан и что он значит».</p>
-          <div className="mt-10 flex items-center gap-3 text-sm text-muted-foreground"><span className="h-px w-8 bg-border" /> Редакция «Арсенала»</div>
+          <div className="mt-10 flex items-center gap-3 text-sm text-muted-foreground"><span className="h-px w-8 bg-border" /> Редакция G.U.N.S</div>
           <div className="absolute bottom-0 right-3 select-none font-display text-[120px] leading-none text-primary/10">А</div>
         </div>
       </section>
