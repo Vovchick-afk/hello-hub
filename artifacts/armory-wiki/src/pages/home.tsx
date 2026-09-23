@@ -13,7 +13,7 @@ export default function Home() {
       <section className="mx-auto grid max-w-[1240px] items-end gap-10 px-5 pb-20 pt-16 md:grid-cols-[1.2fr_.8fr] md:pt-24 lg:px-8 lg:pb-28">
         <div className="fade-up">
           <div className="mb-7 flex items-center gap-3 font-meta text-[10px] uppercase tracking-[0.2em] text-primary"><span className="h-px w-9 bg-primary" /> Полевой справочник · выпуск 01</div>
-          <h1 className="font-display max-w-3xl text-[clamp(3.2rem,8vw,7.5rem)] font-semibold leading-[.93] tracking-[-0.06em]">Смотреть<br /><span className="text-primary">внимательнее.</span></h1>
+          <h1 className="font-display max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold leading-[.93] tracking-[-0.06em]">Смотреть<br /><span className="text-primary">внимательнее.</span></h1>
           <p className="mt-8 max-w-xl text-base leading-7 text-muted-foreground md:text-lg">«Арсенал» — энциклопедия об огнестрельном оружии как о части истории, техники и культуры. Здесь мы разбираем предметы спокойно: без культа, без инструкций, с уважением к фактам.</p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Link href="/catalog" data-testid="link-hero-catalog" className="group inline-flex items-center gap-3 rounded-sm bg-primary px-5 py-3 font-meta text-[11px] uppercase tracking-[0.13em] text-primary-foreground transition-colors hover:bg-accent">Открыть каталог <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></Link>
@@ -44,7 +44,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-[1240px] px-5 pt-20 lg:px-8 lg:pt-28">
         <div className="flex items-end justify-between gap-6"><div><SectionKicker>Из базы моделей</SectionKicker><h2 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-5xl">Живая полка</h2></div><Link href="/catalog" data-testid="link-home-all-weapons" className="hidden items-center gap-2 font-meta text-[10px] uppercase tracking-[0.14em] text-muted-foreground hover:text-primary sm:flex">Все модели <ArrowRight size={15} /></Link></div>
-        {featured.isLoading ? <div className="mt-9 grid gap-4 md:grid-cols-2"><WeaponCardSkeleton /><WeaponCardSkeleton /></div> : featured.isError ? <div className="paper-panel mt-9 p-8"><p data-testid="status-home-error" className="text-sm text-muted-foreground">База моделей временно недоступна. Откройте каталог чуть позже.</p></div> : <div className="mt-9 grid gap-4 md:grid-cols-2">{(featured.data ?? []).map((weapon, index) => <WeaponCard key={weapon.slug} weapon={weapon} index={index} />)}</div>}
+        {(Array.isArray(featured.data) ? featured.data : (featured.data as any)?.data ?? []).map((weapon: any, index: number) => <WeaponCard key={weapon.slug} weapon={weapon} index={index} />)}
         <Link href="/catalog" data-testid="link-home-all-weapons-mobile" className="mt-6 flex items-center gap-2 font-meta text-[10px] uppercase tracking-[0.14em] text-primary sm:hidden">Все модели <ArrowRight size={14} /></Link>
       </section>
 
