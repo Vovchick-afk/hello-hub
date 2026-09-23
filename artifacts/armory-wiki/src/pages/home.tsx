@@ -14,7 +14,7 @@ export default function Home() {
         <div className="fade-up">
           <div className="mb-7 flex items-center gap-3 font-meta text-[10px] uppercase tracking-[0.2em] text-primary"><span className="h-px w-9 bg-primary" /> Полевой справочник · выпуск 01</div>
           <h1 className="font-display max-w-3xl text-[clamp(2.5rem,5vw,5.5rem)] font-semibold leading-[.93] tracking-[-0.06em]">Смотреть<br /><span className="text-primary">внимательнее.</span></h1>
-          <p className="mt-8 max-w-xl text-base leading-7 text-muted-foreground md:text-lg">«Арсенал» — энциклопедия об огнестрельном оружии как о части истории, техники и культуры. Здесь мы разбираем предметы спокойно: без культа, без инструкций, с уважением к фактам.</p>
+          <p className="mt-8 max-w-xl text-base leading-7 text-muted-foreground md:text-lg">G.U.N.S — энциклопедия об огнестрельном оружии как о части истории, техники и культуры. Здесь мы разбираем предметы спокойно: без культа, без инструкций, с уважением к фактам.</p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Link href="/catalog" data-testid="link-hero-catalog" className="group inline-flex items-center gap-3 rounded-sm bg-primary px-5 py-3 font-meta text-[11px] uppercase tracking-[0.13em] text-primary-foreground transition-colors hover:bg-accent">Открыть каталог <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></Link>
             <Link href="/about" data-testid="link-hero-about" className="inline-flex items-center gap-2 px-2 py-3 font-meta text-[11px] uppercase tracking-[0.13em] text-muted-foreground transition-colors hover:text-primary">Как мы работаем <ChevronRight size={15} /></Link>
